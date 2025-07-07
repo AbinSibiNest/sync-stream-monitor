@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -16,6 +16,53 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const menuItems = [
+  { title: "Dashboard", url: "/" },
+  { title: "File Upload", url: "/upload" },
+  { title: "Migration History", url: "/history" },
+  { title: "Configuration", url: "/config" },
+];
+
+const AppContent = () => {
+  const location = useLocation();
+  
+  const getCurrentMenuTitle = () => {
+    const currentItem = menuItems.find(item => item.url === location.pathname);
+    return currentItem ? currentItem.title : "Dashboard";
+  };
+
+  return (
+    <div className="min-h-screen flex w-full bg-gray-950 text-gray-100">
+      <AppSidebar />
+      <div className="flex-1 flex flex-col">
+        <header className="h-16 border-b border-gray-800 flex items-center px-4 bg-gray-900/80 backdrop-blur-sm">
+          <SidebarTrigger className="text-gray-400 hover:text-gray-100" />
+          <div className="flex items-center ml-4 gap-4">
+            <div 
+              className="text-2xl font-bold" 
+              style={{ color: 'rgb(0, 102, 124)' }}
+            >
+              v.
+            </div>
+            <div className="h-6 w-px bg-gray-700"></div>
+            <h1 className="text-lg font-semibold text-gray-100">{getCurrentMenuTitle()}</h1>
+          </div>
+        </header>
+        <main className="flex-1 p-6">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/upload" element={<FileUpload />} />
+            <Route path="/history" element={<MigrationHistory />} />
+            <Route path="/run/:id" element={<RunDetail />} />
+            <Route path="/config" element={<Configuration />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -23,25 +70,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <SidebarProvider>
-          <div className="min-h-screen flex w-full bg-gray-950 text-gray-100">
-            <AppSidebar />
-            <div className="flex-1 flex flex-col">
-              <header className="h-14 border-b border-gray-800 flex items-center px-4 bg-gray-900/50">
-                <SidebarTrigger className="text-gray-400 hover:text-gray-100" />
-                <h1 className="ml-4 text-lg font-semibold text-gray-100">Migration Sync Config</h1>
-              </header>
-              <main className="flex-1 p-6">
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/upload" element={<FileUpload />} />
-                  <Route path="/history" element={<MigrationHistory />} />
-                  <Route path="/run/:id" element={<RunDetail />} />
-                  <Route path="/config" element={<Configuration />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </div>
-          </div>
+          <AppContent />
         </SidebarProvider>
       </BrowserRouter>
     </TooltipProvider>

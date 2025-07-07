@@ -36,33 +36,37 @@ export function AppSidebar() {
 
   const collapsed = state === "collapsed";
   const isActive = (path: string) => location.pathname === path;
-  const hasActiveChild = menuItems.some((item) => isActive(item.url));
 
   return (
-    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-gray-900 border-r border-gray-800`}>
-      <SidebarContent>
-        <div className="p-4">
-          <div className="flex items-center gap-2 mb-6">
-            <Database className="h-8 w-8 text-purple-400" />
+    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-gray-950 border-r border-gray-800`}>
+      <SidebarContent className="bg-gray-950">
+        <div className="p-4 border-b border-gray-800">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-gray-800 rounded-lg">
+              <Database className="h-6 w-6 text-emerald-400" />
+            </div>
             {!collapsed && (
-              <span className="text-xl font-bold text-gray-100">Migration Sync</span>
+              <div>
+                <div className="text-lg font-bold text-gray-100">Migration Sync</div>
+                <div className="text-xs text-gray-400">Data Processing Platform</div>
+              </div>
             )}
           </div>
         </div>
 
-        <SidebarGroup>
+        <SidebarGroup className="px-3 py-4">
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center justify-between text-gray-400 hover:text-gray-100 cursor-pointer group">
-                <span>Migration Sync Config</span>
+              <SidebarGroupLabel className="flex items-center justify-between text-gray-500 hover:text-gray-300 cursor-pointer group px-3 py-2 mb-2">
+                <span className="text-xs uppercase tracking-wide font-semibold">Migration Sync Config</span>
                 {!collapsed && (
-                  <ChevronRight className={`h-4 w-4 transition-transform ${isOpen ? "rotate-90" : ""}`} />
+                  <ChevronRight className={`h-3 w-3 transition-transform ${isOpen ? "rotate-90" : ""}`} />
                 )}
               </SidebarGroupLabel>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarGroupContent>
-                <SidebarMenu>
+                <SidebarMenu className="space-y-1">
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
@@ -70,15 +74,17 @@ export function AppSidebar() {
                           to={item.url}
                           end
                           className={({ isActive }) =>
-                            `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                            `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                               isActive
-                                ? "bg-purple-600 text-white"
-                                : "text-gray-300 hover:text-white hover:bg-gray-800"
+                                ? "bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-white border border-blue-500/30 shadow-md"
+                                : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/50"
                             }`
                           }
                         >
-                          <item.icon className="h-5 w-5" />
-                          {!collapsed && <span>{item.title}</span>}
+                          <item.icon className="h-4 w-4 flex-shrink-0" />
+                          {!collapsed && (
+                            <span className="text-sm font-medium truncate">{item.title}</span>
+                          )}
                         </NavLink>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

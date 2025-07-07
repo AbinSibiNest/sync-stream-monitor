@@ -32,22 +32,29 @@ const AppContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-gray-950 text-gray-100">
-      <AppSidebar />
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 border-b border-gray-800 flex items-center px-4 bg-gray-900/80 backdrop-blur-sm">
-          <SidebarTrigger className="text-gray-400 hover:text-gray-100" />
-          <div className="flex items-center ml-4 gap-4">
-            <div 
-              className="text-2xl font-bold" 
-              style={{ color: 'rgb(0, 102, 124)' }}
-            >
-              v.
-            </div>
-            <div className="h-6 w-px bg-gray-700"></div>
-            <h1 className="text-lg font-semibold text-gray-100">{getCurrentMenuTitle()}</h1>
+    <div className="min-h-screen flex flex-col w-full bg-gray-950 text-gray-100">
+      <header 
+        className="h-16 flex items-center justify-between px-6 w-full"
+        style={{ backgroundColor: 'rgb(0, 102, 124)' }}
+      >
+        <div className="flex items-center gap-4">
+          <SidebarTrigger className="text-white hover:text-gray-200" />
+          <span className="text-white font-medium">John Doe</span>
+        </div>
+        
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div className="text-2xl font-bold text-white">
+            V.
           </div>
-        </header>
+        </div>
+        
+        <div className="text-white font-medium">
+          {getCurrentMenuTitle()}
+        </div>
+      </header>
+      
+      <div className="flex flex-1">
+        <AppSidebar />
         <main className="flex-1 p-6">
           <Routes>
             <Route path="/" element={<Dashboard />} />

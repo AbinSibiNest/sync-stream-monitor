@@ -30,10 +30,11 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
+  const collapsed = state === "collapsed";
   const isActive = (path: string) => location.pathname === path;
   const hasActiveChild = menuItems.some((item) => isActive(item.url));
 

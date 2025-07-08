@@ -13,9 +13,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const menuItems = [
+  { title: "Migration Sync Config", icon: Database },
   { title: "Cases", icon: Briefcase },
   { title: "Requests", icon: FileText },
   { title: "Payments", icon: CreditCard },
@@ -31,40 +31,25 @@ const menuItems = [
 
 export function AppSidebar() {
   const { state } = useSidebar();
-  const [isOpen, setIsOpen] = useState(true);
-
+  
   const collapsed = state === "collapsed";
 
   return (
     <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-[#1e2328] border-r border-gray-700 mt-16`}>
       <SidebarContent className="bg-[#1e2328]">
         <SidebarGroup className="px-3 py-4">
-          <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-            <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center justify-between text-gray-400 hover:text-gray-200 cursor-pointer group px-3 py-2 mb-2">
-                <Typography variant="caption" className="text-xs uppercase tracking-wide font-semibold">
-                  Migration Sync Config
-                </Typography>
-                {!collapsed && (
-                  <ChevronRight className={`h-3 w-3 transition-transform ${isOpen ? "rotate-90" : ""}`} />
-                )}
-              </SidebarGroupLabel>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {menuItems.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors">
-                        <item.icon className="h-4 w-4" />
-                        {!collapsed && <span className="text-sm">{item.title}</span>}
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </Collapsible>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors">
+                    <item.icon className="h-4 w-4" />
+                    {!collapsed && <span className="text-sm">{item.title}</span>}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

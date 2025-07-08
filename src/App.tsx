@@ -69,7 +69,7 @@ const AppContent = () => {
         >
           <div className="flex items-center gap-4">
             <SidebarTrigger className="text-white hover:text-gray-200" />
-            <span className="text-white font-medium">John Doe</span>
+            <span className="text-white font-medium">Migration Sync</span>
           </div>
           
           <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -79,7 +79,7 @@ const AppContent = () => {
           </div>
           
           <div className="text-white font-medium">
-            Run Detail
+            John Doe
           </div>
         </header>
         
@@ -104,7 +104,7 @@ const AppContent = () => {
       >
         <div className="flex items-center gap-4">
           <SidebarTrigger className="text-white hover:text-gray-200" />
-          <span className="text-white font-medium">John Doe</span>
+          <span className="text-white font-medium">Migration Sync</span>
         </div>
         
         <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -114,7 +114,7 @@ const AppContent = () => {
         </div>
         
         <div className="text-white font-medium">
-          Migration Sync
+          John Doe
         </div>
       </header>
       

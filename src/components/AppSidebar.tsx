@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Migration Sync Config", icon: Database },
   { title: "Cases", icon: Briefcase },
   { title: "Requests", icon: FileText },
   { title: "Payments", icon: CreditCard },
@@ -27,6 +26,7 @@ const menuItems = [
   { title: "Snippets", icon: Code },
   { title: "File Manager", icon: FolderOpen },
   { title: "Communications", icon: MessageSquare },
+  { title: "Migration Sync Config", icon: Database },
 ];
 
 export function AppSidebar() {

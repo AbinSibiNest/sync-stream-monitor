@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Database, ChevronRight, Briefcase, FileText, CreditCard, Building, Users, Scale, HelpCircle, Code, FolderOpen, MessageSquare } from "lucide-react";
+import { Database, ChevronRight, Briefcase, FileText, CreditCard, Building, Users, Scale, HelpCircle, Code, FolderOpen, MessageSquare, PersonStanding } from "lucide-react";
 import { Box, Typography, IconButton, Collapse } from "@mui/material";
 import {
   Sidebar,
@@ -17,18 +17,18 @@ const menuItems = [
   { title: "Cases", icon: Briefcase },
   { title: "Requests", icon: FileText },
   { title: "Payments", icon: CreditCard },
-  { type: "separator" }, // <-- Separator added here
+  { type: "separator" }, 
   { title: "Firms", icon: Building },
-  { title: "Customers", icon: Users },
+  { title: "Customers", icon: PersonStanding },
   { title: "Defendants", icon: Scale },
-  { type: "separator" }, // <-- Another separator
+  { type: "separator" }, 
   { title: "Case Types", icon: HelpCircle },
   { title: "Questionnaires", icon: FileText },
   { title: "Snippets", icon: Code },
   { type: "separator" },
   { title: "File Manager", icon: FolderOpen },
   { title: "Communications", icon: MessageSquare },
-  { type: "separator" }, // <-- And another one
+  { type: "separator" }, 
   { title: "Users", icon: Users },
   { title: "Migration Sync Config", icon: Database },
 ];

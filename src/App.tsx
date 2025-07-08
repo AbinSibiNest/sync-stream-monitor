@@ -8,6 +8,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import Dashboard from "./pages/Dashboard";
 import FileUpload from "./pages/FileUpload";
 import MigrationHistory from "./pages/MigrationHistory";
@@ -16,6 +18,23 @@ import Configuration from "./pages/Configuration";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#14b8a6',
+    },
+    background: {
+      default: '#1a1f26',
+      paper: '#1e2328',
+    },
+    text: {
+      primary: '#f3f4f6',
+      secondary: '#9ca3af',
+    },
+  },
+});
 
 const AppContent = () => {
   const location = useLocation();
@@ -45,7 +64,7 @@ const AppContent = () => {
     return (
       <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
         <header 
-          className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700"
+          className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700 fixed top-0 left-0 right-0 z-50"
           style={{ backgroundColor: 'rgb(0, 102, 124)' }}
         >
           <div className="flex items-center gap-4">
@@ -64,7 +83,7 @@ const AppContent = () => {
           </div>
         </header>
         
-        <div className="flex flex-1">
+        <div className="flex flex-1 pt-16">
           <AppSidebar />
           <main className="flex-1 p-6 bg-[#1a1f26]">
             <Routes>
@@ -80,7 +99,7 @@ const AppContent = () => {
   return (
     <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
       <header 
-        className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700"
+        className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700 fixed top-0 left-0 right-0 z-50"
         style={{ backgroundColor: 'rgb(0, 102, 124)' }}
       >
         <div className="flex items-center gap-4">
@@ -99,7 +118,7 @@ const AppContent = () => {
         </div>
       </header>
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 pt-16">
         <AppSidebar />
         <main className="flex-1 bg-[#1a1f26]">
           <Tabs value={getCurrentTab()} onValueChange={handleTabChange} className="h-full flex flex-col">
@@ -155,15 +174,18 @@ const AppContent = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <SidebarProvider>
-          <AppContent />
-        </SidebarProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <SidebarProvider>
+            <AppContent />
+          </SidebarProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

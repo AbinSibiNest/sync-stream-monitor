@@ -32,9 +32,9 @@ const AppContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col w-full bg-gray-950 text-gray-100">
+    <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
       <header 
-        className="h-16 flex items-center justify-between px-6 w-full"
+        className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700"
         style={{ backgroundColor: 'rgb(0, 102, 124)' }}
       >
         <div className="flex items-center gap-4">
@@ -55,7 +55,7 @@ const AppContent = () => {
       
       <div className="flex flex-1">
         <AppSidebar />
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 bg-[#1a1f26]">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/upload" element={<FileUpload />} />

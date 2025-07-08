@@ -21,6 +21,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -35,15 +36,14 @@ export function AppSidebar() {
   const [isOpen, setIsOpen] = useState(true);
 
   const collapsed = state === "collapsed";
-  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-gray-950 border-r border-gray-800`}>
-      <SidebarContent className="bg-gray-950">
-        <div className="p-4 border-b border-gray-800">
+    <Sidebar className={`${collapsed ? "w-16" : "w-64"} bg-[#1e2328] border-r border-gray-700`}>
+      <SidebarContent className="bg-[#1e2328]">
+        <div className="p-4 border-b border-gray-700">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-gray-800 rounded-lg">
-              <Database className="h-6 w-6 text-emerald-400" />
+            <div className="p-2 bg-gray-700 rounded-lg">
+              <Database className="h-6 w-6 text-teal-400" />
             </div>
             {!collapsed && (
               <div>
@@ -57,7 +57,7 @@ export function AppSidebar() {
         <SidebarGroup className="px-3 py-4">
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center justify-between text-gray-500 hover:text-gray-300 cursor-pointer group px-3 py-2 mb-2">
+              <SidebarGroupLabel className="flex items-center justify-between text-gray-400 hover:text-gray-200 cursor-pointer group px-3 py-2 mb-2">
                 <span className="text-xs uppercase tracking-wide font-semibold">Migration Sync Config</span>
                 {!collapsed && (
                   <ChevronRight className={`h-3 w-3 transition-transform ${isOpen ? "rotate-90" : ""}`} />
@@ -66,6 +66,33 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarGroupContent>
+                {!collapsed && (
+                  <div className="mb-4 px-3">
+                    <Tabs defaultValue="overview" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3 bg-gray-700 h-8">
+                        <TabsTrigger 
+                          value="overview" 
+                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                        >
+                          Overview
+                        </TabsTrigger>
+                        <TabsTrigger 
+                          value="settings" 
+                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                        >
+                          Settings
+                        </TabsTrigger>
+                        <TabsTrigger 
+                          value="logs" 
+                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                        >
+                          Logs
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                )}
+                
                 <SidebarMenu className="space-y-1">
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
@@ -76,8 +103,8 @@ export function AppSidebar() {
                           className={({ isActive }) =>
                             `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                               isActive
-                                ? "bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-white border border-blue-500/30 shadow-md"
-                                : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/50"
+                                ? "bg-teal-600/20 text-white border border-teal-500/30 shadow-md"
+                                : "text-gray-300 hover:text-gray-100 hover:bg-gray-700/50"
                             }`
                           }
                         >

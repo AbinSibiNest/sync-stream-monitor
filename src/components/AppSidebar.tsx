@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Database, ChevronRight, Briefcase, FileText, CreditCard, Building, Users, Scale, HelpCircle, Code, FolderOpen, MessageSquare } from "lucide-react";
 import { Box, Typography, IconButton, Collapse } from "@mui/material";
@@ -18,20 +17,25 @@ const menuItems = [
   { title: "Cases", icon: Briefcase },
   { title: "Requests", icon: FileText },
   { title: "Payments", icon: CreditCard },
+  { type: "separator" }, // <-- Separator added here
   { title: "Firms", icon: Building },
   { title: "Customers", icon: Users },
   { title: "Defendants", icon: Scale },
+  { type: "separator" }, // <-- Another separator
   { title: "Case Types", icon: HelpCircle },
   { title: "Questionnaires", icon: FileText },
   { title: "Snippets", icon: Code },
+  { type: "separator" },
   { title: "File Manager", icon: FolderOpen },
   { title: "Communications", icon: MessageSquare },
+  { type: "separator" }, // <-- And another one
+  { title: "Users", icon: Users },
   { title: "Migration Sync Config", icon: Database },
 ];
 
 export function AppSidebar() {
   const { state } = useSidebar();
-  
+
   const collapsed = state === "collapsed";
 
   return (
@@ -40,13 +44,19 @@ export function AppSidebar() {
         <SidebarGroup className="px-3 py-4">
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors">
-                    <item.icon className="h-4 w-4" />
-                    {!collapsed && <span className="text-sm">{item.title}</span>}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              {menuItems.map((item, index) => (
+                <div key={index}> {/* Use a div or React.Fragment as a wrapper for conditional rendering */}
+                  {item.type === "separator" ? (
+                    <div className="border-t border-gray-600 my-2 mx-3"></div> // Separator style
+                  ) : (
+                    <SidebarMenuItem>
+                      <SidebarMenuButton className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors">
+                        <item.icon className="h-4 w-4" />
+                        {!collapsed && <span className="text-sm">{item.title}</span>}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )}
+                </div>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Upload,
@@ -21,7 +21,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -32,7 +31,6 @@ const menuItems = [
 
 export function AppSidebar() {
   const { state } = useSidebar();
-  const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
   const collapsed = state === "collapsed";
@@ -66,33 +64,6 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarGroupContent>
-                {!collapsed && (
-                  <div className="mb-4 px-3">
-                    <Tabs defaultValue="overview" className="w-full">
-                      <TabsList className="grid w-full grid-cols-3 bg-gray-700 h-8">
-                        <TabsTrigger 
-                          value="overview" 
-                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
-                        >
-                          Overview
-                        </TabsTrigger>
-                        <TabsTrigger 
-                          value="settings" 
-                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
-                        >
-                          Settings
-                        </TabsTrigger>
-                        <TabsTrigger 
-                          value="logs" 
-                          className="text-xs data-[state=active]:bg-teal-600 data-[state=active]:text-white"
-                        >
-                          Logs
-                        </TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                )}
-                
                 <SidebarMenu className="space-y-1">
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>

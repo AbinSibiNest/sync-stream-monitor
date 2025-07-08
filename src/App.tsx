@@ -3,10 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Dashboard from "./pages/Dashboard";
 import FileUpload from "./pages/FileUpload";
 import MigrationHistory from "./pages/MigrationHistory";
@@ -16,20 +17,65 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const menuItems = [
-  { title: "Dashboard", url: "/" },
-  { title: "File Upload", url: "/upload" },
-  { title: "Migration History", url: "/history" },
-  { title: "Configuration", url: "/config" },
-];
-
 const AppContent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   
-  const getCurrentMenuTitle = () => {
-    const currentItem = menuItems.find(item => item.url === location.pathname);
-    return currentItem ? currentItem.title : "Dashboard";
+  const getCurrentTab = () => {
+    switch (location.pathname) {
+      case "/": return "dashboard";
+      case "/upload": return "upload";
+      case "/history": return "history";
+      case "/config": return "config";
+      default: return "dashboard";
+    }
   };
+
+  const handleTabChange = (value: string) => {
+    switch (value) {
+      case "dashboard": navigate("/"); break;
+      case "upload": navigate("/upload"); break;
+      case "history": navigate("/history"); break;
+      case "config": navigate("/config"); break;
+    }
+  };
+
+  // Handle special routes that don't need tabs
+  if (location.pathname.startsWith("/run/")) {
+    return (
+      <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
+        <header 
+          className="h-16 flex items-center justify-between px-6 w-full border-b border-gray-700"
+          style={{ backgroundColor: 'rgb(0, 102, 124)' }}
+        >
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="text-white hover:text-gray-200" />
+            <span className="text-white font-medium">John Doe</span>
+          </div>
+          
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <div className="text-2xl font-bold text-white">
+              V.
+            </div>
+          </div>
+          
+          <div className="text-white font-medium">
+            Run Detail
+          </div>
+        </header>
+        
+        <div className="flex flex-1">
+          <AppSidebar />
+          <main className="flex-1 p-6 bg-[#1a1f26]">
+            <Routes>
+              <Route path="/run/:id" element={<RunDetail />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
@@ -49,21 +95,58 @@ const AppContent = () => {
         </div>
         
         <div className="text-white font-medium">
-          {getCurrentMenuTitle()}
+          Migration Sync
         </div>
       </header>
       
       <div className="flex flex-1">
         <AppSidebar />
-        <main className="flex-1 p-6 bg-[#1a1f26]">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/upload" element={<FileUpload />} />
-            <Route path="/history" element={<MigrationHistory />} />
-            <Route path="/run/:id" element={<RunDetail />} />
-            <Route path="/config" element={<Configuration />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+        <main className="flex-1 bg-[#1a1f26]">
+          <Tabs value={getCurrentTab()} onValueChange={handleTabChange} className="h-full flex flex-col">
+            <div className="border-b border-gray-700 px-6">
+              <TabsList className="grid w-full max-w-4xl grid-cols-4 bg-transparent h-12 p-0">
+                <TabsTrigger 
+                  value="dashboard" 
+                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+                >
+                  Dashboard
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="upload" 
+                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+                >
+                  File Upload
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="history" 
+                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+                >
+                  Migration History
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="config" 
+                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+                >
+                  Configuration
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            <div className="flex-1 p-6">
+              <TabsContent value="dashboard" className="h-full m-0">
+                <Dashboard />
+              </TabsContent>
+              <TabsContent value="upload" className="h-full m-0">
+                <FileUpload />
+              </TabsContent>
+              <TabsContent value="history" className="h-full m-0">
+                <MigrationHistory />
+              </TabsContent>
+              <TabsContent value="config" className="h-full m-0">
+                <Configuration />
+              </TabsContent>
+            </div>
+          </Tabs>
         </main>
       </div>
     </div>

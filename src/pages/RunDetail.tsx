@@ -53,43 +53,36 @@ const RunDetail = () => {
         timestamp: "13:15:01",
         level: "INFO",
         message: "Migration started for orders_export.csv",
-        executionLevel: "bronze",
       },
       {
         timestamp: "13:15:15",
         level: "INFO",
         message: "Processing batch 1-500: 500 records",
-        executionLevel: "bronze",
       },
       {
         timestamp: "13:16:02",
         level: "WARN",
         message: "Invalid date format in row 345: '2024-13-01'",
-        executionLevel: "silver",
       },
       {
         timestamp: "13:16:30",
         level: "INFO",
         message: "Processing batch 501-1000: 500 records",
-        executionLevel: "bronze",
       },
       {
         timestamp: "13:17:15",
         level: "ERROR",
         message: "Foreign key constraint violation in batch 1001-1500",
-        executionLevel: "gold",
       },
       {
         timestamp: "13:17:45",
         level: "INFO",
         message: "Processing batch 1501-2000: 375 records",
-        executionLevel: "bronze",
       },
       {
         timestamp: "13:18:30",
         level: "ERROR",
         message: "Migration completed with errors: 225 failed records",
-        executionLevel: "gold",
       },
     ],
     failedRecords: [
@@ -165,21 +158,11 @@ const RunDetail = () => {
     }
   };
 
-  const getExecutionLevelBadge = (executionLevel: string) => {
-    const variants = {
-      bronze: "bg-orange-900/50 text-orange-400 border-orange-600",
-      silver: "bg-gray-900/50 text-gray-400 border-gray-600",
-      gold: "bg-yellow-900/50 text-yellow-400 border-yellow-600",
-    };
-    return (
-      variants[executionLevel as keyof typeof variants] ||
-      "bg-gray-900/50 text-gray-400 border-gray-600"
-    );
-  };
+  
 
   const filteredLogs = runDetails.logs.filter((log) => {
     if (logLevelFilter === "all") return true;
-    return log.executionLevel === logLevelFilter;
+    return log.level === logLevelFilter;
   });
 
   return (
@@ -342,9 +325,9 @@ const RunDetail = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
                     <SelectItem value="all">All Levels</SelectItem>
-                    <SelectItem value="bronze">Bronze</SelectItem>
-                    <SelectItem value="silver">Silver</SelectItem>
-                    <SelectItem value="gold">Gold</SelectItem>
+                    <SelectItem value="INFO">Info</SelectItem>
+                    <SelectItem value="WARN">Warn</SelectItem>
+                    <SelectItem value="ERROR">Error</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -359,13 +342,6 @@ const RunDetail = () => {
                     </div>
                     <Badge className={`text-xs ${getLogLevelStyle(log.level)}`}>
                       {log.level}
-                    </Badge>
-                    <Badge
-                      className={`text-xs ${getExecutionLevelBadge(
-                        log.executionLevel
-                      )}`}
-                    >
-                      {log.executionLevel.toUpperCase()}
                     </Badge>
                     <div className="text-sm text-gray-300 flex-1">
                       {log.message}

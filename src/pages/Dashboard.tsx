@@ -14,10 +14,14 @@ import {
   Database,
   History,
   Settings,
+  Timer,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Dashboard = () => {
+  const location = useLocation();
+  const isInFirmContext = location.pathname.startsWith("/firm/");
+  
   // Mock data - would come from API in real implementation
   const metrics = {
     filesProcessed24h: 127,
@@ -54,6 +58,11 @@ const Dashboard = () => {
     return variants[status as keyof typeof variants] || "bg-gray-900/50 text-gray-400 border-gray-600";
   };
 
+  // Different upload URLs based on context
+  const uploadUrl = isInFirmContext ? "#" : "/upload";
+  const historyUrl = isInFirmContext ? "#" : "/history";
+  const configUrl = isInFirmContext ? "#" : "/config";
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -61,12 +70,14 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold text-gray-100">Dashboard</h1>
           <p className="text-gray-400 mt-1">Overview of your migration system status</p>
         </div>
-        <Link to="/upload">
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-            <Upload className="h-4 w-4 mr-2" />
-            Upload New File
-          </Button>
-        </Link>
+        {!isInFirmContext && (
+          <Link to="/upload">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Upload className="h-4 w-4 mr-2" />
+              Upload New File
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Metrics Cards */}
@@ -124,11 +135,17 @@ const Dashboard = () => {
               <CardTitle className="text-gray-100">Recent Migration Runs</CardTitle>
               <CardDescription className="text-gray-400">Latest migration activities</CardDescription>
             </div>
-            <Link to="/history">
+            {!isInFirmContext ? (
+              <Link to="/history">
+                <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
+                  View All
+                </Button>
+              </Link>
+            ) : (
               <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
                 View All
               </Button>
-            </Link>
+            )}
           </div>
         </CardHeader>
         <CardContent>
@@ -165,31 +182,78 @@ const Dashboard = () => {
           <CardDescription className="text-gray-400">Common tasks and shortcuts</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link to="/upload">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {!isInFirmContext ? (
+              <Link to="/upload">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white h-16">
+                  <div className="text-center">
+                    <Upload className="h-6 w-6 mx-auto mb-1" />
+                    <span>Upload File</span>
+                  </div>
+                </Button>
+              </Link>
+            ) : (
               <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white h-16">
                 <div className="text-center">
                   <Upload className="h-6 w-6 mx-auto mb-1" />
                   <span>Upload File</span>
                 </div>
               </Button>
-            </Link>
-            <Link to="/history">
+            )}
+            
+            {!isInFirmContext ? (
+              <Link to="/pending">
+                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+                  <div className="text-center">
+                    <Timer className="h-6 w-6 mx-auto mb-1" />
+                    <span>Pending Migration</span>
+                  </div>
+                </Button>
+              </Link>
+            ) : (
+              <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+                <div className="text-center">
+                  <Timer className="h-6 w-6 mx-auto mb-1" />
+                  <span>Pending Migration</span>
+                </div>
+              </Button>
+            )}
+            
+            {!isInFirmContext ? (
+              <Link to="/history">
+                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+                  <div className="text-center">
+                    <History className="h-6 w-6 mx-auto mb-1" />
+                    <span>View History</span>
+                  </div>
+                </Button>
+              </Link>
+            ) : (
               <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
                 <div className="text-center">
                   <History className="h-6 w-6 mx-auto mb-1" />
                   <span>View History</span>
                 </div>
               </Button>
-            </Link>
-            <Link to="/config">
+            )}
+            
+            {!isInFirmContext ? (
+              <Link to="/config">
+                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+                  <div className="text-center">
+                    <Settings className="h-6 w-6 mx-auto mb-1" />
+                    <span>Configuration</span>
+                  </div>
+                </Button>
+              </Link>
+            ) : (
               <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
                 <div className="text-center">
                   <Settings className="h-6 w-6 mx-auto mb-1" />
                   <span>Configuration</span>
                 </div>
               </Button>
-            </Link>
+            )}
           </div>
         </CardContent>
       </Card>

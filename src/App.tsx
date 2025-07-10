@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,16 +7,13 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import Dashboard from "./pages/Dashboard";
-import FileUpload from "./pages/FileUpload";
-import PendingMigration from "./pages/PendingMigration";
-import MigrationHistory from "./pages/MigrationHistory";
 import RunDetail from "./pages/RunDetail";
-import Configuration from "./pages/Configuration";
 import NotFound from "./pages/NotFound";
+import MigrationSyncConfig from "./pages/MigrationSyncConfig";
+import FirmDetails from "./pages/FirmDetails";
 
 const queryClient = new QueryClient();
 
@@ -39,29 +37,8 @@ const darkTheme = createTheme({
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const getCurrentTab = () => {
-    switch (location.pathname) {
-      case "/": return "dashboard";
-      case "/upload": return "upload";
-      case "/pending": return "pending";
-      case "/history": return "history";
-      case "/config": return "config";
-      default: return "dashboard";
-    }
-  };
 
-  const handleTabChange = (value: string) => {
-    switch (value) {
-      case "dashboard": navigate("/"); break;
-      case "upload": navigate("/upload"); break;
-      case "pending": navigate("/pending"); break;
-      case "history": navigate("/history"); break;
-      case "config": navigate("/config"); break;
-    }
-  };
-
-  // Handle special routes that don't need tabs
+  // Handle special routes that don't need sidebar highlighting
   if (location.pathname.startsWith("/run/")) {
     return (
       <div className="min-h-screen flex flex-col w-full bg-[#1a1f26] text-gray-100 dark">
@@ -71,7 +48,7 @@ const AppContent = () => {
         >
           <div className="flex items-center gap-4">
             <SidebarTrigger className="text-white hover:text-gray-200" />
-            <span className="text-white font-medium">Migration Sync</span>
+            <span className="text-white font-medium">John Doe</span>
           </div>
           
           <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -81,7 +58,7 @@ const AppContent = () => {
           </div>
           
           <div className="text-white font-medium">
-            John Doe
+            Migration Sync
           </div>
         </header>
         
@@ -106,7 +83,7 @@ const AppContent = () => {
       >
         <div className="flex items-center gap-4">
           <SidebarTrigger className="text-white hover:text-gray-200" />
-          <span className="text-white font-medium">Migration Sync</span>
+          <span className="text-white font-medium">John Doe</span>
         </div>
         
         <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -116,67 +93,19 @@ const AppContent = () => {
         </div>
         
         <div className="text-white font-medium">
-          John Doe
+          Migration Sync
         </div>
       </header>
       
       <div className="flex flex-1 pt-16">
         <AppSidebar />
         <main className="flex-1 bg-[#1a1f26]">
-          <Tabs value={getCurrentTab()} onValueChange={handleTabChange} className="h-full flex flex-col">
-            <div className="border-b border-gray-700 px-6">
-              <TabsList className="grid w-full max-w-5xl grid-cols-5 bg-transparent h-12 p-0">
-                <TabsTrigger 
-                  value="dashboard" 
-                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
-                >
-                  Dashboard
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="upload" 
-                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
-                >
-                  File Upload
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="pending" 
-                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
-                >
-                  Pending Migration
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="history" 
-                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
-                >
-                  Migration History
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="config" 
-                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
-                >
-                  Configuration
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <div className="flex-1 p-6">
-              <TabsContent value="dashboard" className="h-full m-0">
-                <Dashboard />
-              </TabsContent>
-              <TabsContent value="upload" className="h-full m-0">
-                <FileUpload />
-              </TabsContent>
-              <TabsContent value="pending" className="h-full m-0">
-                <PendingMigration />
-              </TabsContent>
-              <TabsContent value="history" className="h-full m-0">
-                <MigrationHistory />
-              </TabsContent>
-              <TabsContent value="config" className="h-full m-0">
-                <Configuration />
-              </TabsContent>
-            </div>
-          </Tabs>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/migration-sync-config" element={<MigrationSyncConfig />} />
+            <Route path="/firm/:firmId" element={<FirmDetails />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </main>
       </div>
     </div>

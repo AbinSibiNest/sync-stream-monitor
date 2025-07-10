@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -19,6 +19,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
+  ArrowLeft,
   CheckCircle,
   XCircle,
   Clock,
@@ -32,7 +33,8 @@ import {
 } from "lucide-react";
 
 const RunDetail = () => {
-  const { id } = useParams();
+  const { id, firmId } = useParams();
+  const navigate = useNavigate();
   const [logLevelFilter, setLogLevelFilter] = useState("all");
 
   // Mock data - would come from API in real implementation
@@ -165,15 +167,30 @@ const RunDetail = () => {
     return log.level === logLevelFilter;
   });
 
+  const handleBack = () => {
+    navigate(`/firm/${firmId}#migration-history`);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-100">
-            Migration Run Details
-          </h1>
-          <p className="text-gray-400 mt-1">Run ID: {id}</p>
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleBack}
+            className="border-gray-700 hover:bg-gray-800"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Migration History
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-100">
+              Migration Run Details
+            </h1>
+            <p className="text-gray-400 mt-1">Run ID: {id}</p>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <Button

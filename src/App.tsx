@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import Dashboard from "./pages/Dashboard";
 import FileUpload from "./pages/FileUpload";
+import PendingMigration from "./pages/PendingMigration";
 import MigrationHistory from "./pages/MigrationHistory";
 import RunDetail from "./pages/RunDetail";
 import Configuration from "./pages/Configuration";
@@ -44,6 +44,7 @@ const AppContent = () => {
     switch (location.pathname) {
       case "/": return "dashboard";
       case "/upload": return "upload";
+      case "/pending": return "pending";
       case "/history": return "history";
       case "/config": return "config";
       default: return "dashboard";
@@ -54,6 +55,7 @@ const AppContent = () => {
     switch (value) {
       case "dashboard": navigate("/"); break;
       case "upload": navigate("/upload"); break;
+      case "pending": navigate("/pending"); break;
       case "history": navigate("/history"); break;
       case "config": navigate("/config"); break;
     }
@@ -123,7 +125,7 @@ const AppContent = () => {
         <main className="flex-1 bg-[#1a1f26]">
           <Tabs value={getCurrentTab()} onValueChange={handleTabChange} className="h-full flex flex-col">
             <div className="border-b border-gray-700 px-6">
-              <TabsList className="grid w-full max-w-4xl grid-cols-4 bg-transparent h-12 p-0">
+              <TabsList className="grid w-full max-w-5xl grid-cols-5 bg-transparent h-12 p-0">
                 <TabsTrigger 
                   value="dashboard" 
                   className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
@@ -135,6 +137,12 @@ const AppContent = () => {
                   className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
                 >
                   File Upload
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="pending" 
+                  className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+                >
+                  Pending Migration
                 </TabsTrigger>
                 <TabsTrigger 
                   value="history" 
@@ -157,6 +165,9 @@ const AppContent = () => {
               </TabsContent>
               <TabsContent value="upload" className="h-full m-0">
                 <FileUpload />
+              </TabsContent>
+              <TabsContent value="pending" className="h-full m-0">
+                <PendingMigration />
               </TabsContent>
               <TabsContent value="history" className="h-full m-0">
                 <MigrationHistory />

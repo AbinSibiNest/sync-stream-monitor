@@ -1,8 +1,10 @@
 
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -15,10 +17,12 @@ import {
   Activity,
   Database,
   RefreshCw,
+  Filter,
 } from "lucide-react";
 
 const RunDetail = () => {
   const { id } = useParams();
+  const [logLevelFilter, setLogLevelFilter] = useState("all");
 
   // Mock data - would come from API in real implementation
   const runDetails = {
@@ -33,13 +37,13 @@ const RunDetail = () => {
     successRate: 89.2,
     stepFunctionUrl: "https://console.aws.amazon.com/states/home#/executions/details/arn:aws:states:us-east-1:123456789012:execution:MyStateMachine:run-003",
     logs: [
-      { timestamp: "13:15:01", level: "INFO", message: "Migration started for orders_export.csv" },
-      { timestamp: "13:15:15", level: "INFO", message: "Processing batch 1-500: 500 records" },
-      { timestamp: "13:16:02", level: "WARN", message: "Invalid date format in row 345: '2024-13-01'" },
-      { timestamp: "13:16:30", level: "INFO", message: "Processing batch 501-1000: 500 records" },
-      { timestamp: "13:17:15", level: "ERROR", message: "Foreign key constraint violation in batch 1001-1500" },
-      { timestamp: "13:17:45", level: "INFO", message: "Processing batch 1501-2000: 375 records" },
-      { timestamp: "13:18:30", level: "ERROR", message: "Migration completed with errors: 225 failed records" },
+      { timestamp: "13:15:01", level: "INFO", message: "Migration started for orders_export.csv", executionLevel: "bronze" },
+      { timestamp: "13:15:15", level: "INFO", message: "Processing batch 1-500: 500 records", executionLevel: "bronze" },
+      { timestamp: "13:16:02", level: "WARN", message: "Invalid date format in row 345: '2024-13-01'", executionLevel: "silver" },
+      { timestamp: "13:16:30", level: "INFO", message: "Processing batch 501-1000: 500 records", executionLevel: "bronze" },
+      { timestamp: "13:17:15", level: "ERROR", message: "Foreign key constraint violation in batch 1001-1500", executionLevel: "gold" },
+      { timestamp: "13:17:45", level: "INFO", message: "Processing batch 1501-2000: 375 records", executionLevel: "bronze" },
+      { timestamp: "13:18:30", level: "ERROR", message: "Migration completed with errors: 225 failed records", executionLevel: "gold" },
     ],
     failedRecords: [
       {
@@ -94,6 +98,20 @@ const RunDetail = () => {
         return "text-gray-400 bg-gray-900/20";
     }
   };
+
+  const getExecutionLevelBadge = (executionLevel: string) => {
+    const variants = {
+      bronze: "bg-orange-900/50 text-orange-400 border-orange-600",
+      silver: "bg-gray-900/50 text-gray-400 border-gray-600",
+      gold: "bg-yellow-900/50 text-yellow-400 border-yellow-600",
+    };
+    return variants[executionLevel as keyof typeof variants] || "bg-gray-900/50 text-gray-400 border-gray-600";
+  };
+
+  const filteredLogs = runDetails.logs.filter((log) => {
+    if (logLevelFilter === "all") return true;
+    return log.executionLevel === logLevelFilter;
+  });
 
   return (
     <div className="space-y-6">
@@ -219,12 +237,30 @@ const RunDetail = () => {
             </TabsList>
 
             <TabsContent value="logs" className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-gray-100">Execution Logs</h3>
+                <Select value={logLevelFilter} onValueChange={setLogLevelFilter}>
+                  <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-gray-100">
+                    <Filter className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Filter by execution level" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-gray-700">
+                    <SelectItem value="all">All Levels</SelectItem>
+                    <SelectItem value="bronze">Bronze</SelectItem>
+                    <SelectItem value="silver">Silver</SelectItem>
+                    <SelectItem value="gold">Gold</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {runDetails.logs.map((log, index) => (
+                {filteredLogs.map((log, index) => (
                   <div key={index} className="flex items-start space-x-3 p-3 bg-gray-800/50 rounded-lg">
                     <div className="text-xs text-gray-400 font-mono w-16">{log.timestamp}</div>
                     <Badge className={`text-xs ${getLogLevelStyle(log.level)}`}>
                       {log.level}
+                    </Badge>
+                    <Badge className={`text-xs ${getExecutionLevelBadge(log.executionLevel)}`}>
+                      {log.executionLevel.toUpperCase()}
                     </Badge>
                     <div className="text-sm text-gray-300 flex-1">{log.message}</div>
                   </div>

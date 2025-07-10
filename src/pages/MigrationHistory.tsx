@@ -21,6 +21,7 @@ import {
   Filter,
   Eye,
   Calendar,
+  Hourglass,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -43,7 +44,7 @@ const MigrationHistory = () => {
     {
       id: "run-002",
       filename: "products_update.csv",
-      status: "In Progress",
+      status: "Pending Migration",
       startTime: "2024-01-15 15:00:00",
       endTime: null,
       recordsProcessed: 890,
@@ -73,11 +74,11 @@ const MigrationHistory = () => {
     {
       id: "run-005",
       filename: "user_profiles.csv",
-      status: "Success",
+      status: "Pending Migration",
       startTime: "2024-01-15 11:30:00",
-      endTime: "2024-01-15 11:31:20",
+      endTime: null,
       recordsProcessed: 567,
-      recordsFailed: 2,
+      recordsFailed: 0,
       duration: "1m 20s"
     },
   ];
@@ -88,6 +89,8 @@ const MigrationHistory = () => {
         return <CheckCircle className="h-4 w-4 text-green-400" />;
       case "In Progress":
         return <Clock className="h-4 w-4 text-blue-400" />;
+      case "Pending Migration":
+        return <Hourglass className="h-4 w-4 text-yellow-400" />;
       case "Failed":
         return <XCircle className="h-4 w-4 text-red-400" />;
       default:
@@ -99,6 +102,7 @@ const MigrationHistory = () => {
     const variants = {
       Success: "bg-green-900/50 text-green-400 border-green-600",
       "In Progress": "bg-blue-900/50 text-blue-400 border-blue-600",
+      "Pending Migration": "bg-yellow-900/50 text-yellow-400 border-yellow-600",
       Failed: "bg-red-900/50 text-red-400 border-red-600",
     };
     return variants[status as keyof typeof variants] || "bg-gray-900/50 text-gray-400 border-gray-600";
@@ -141,6 +145,7 @@ const MigrationHistory = () => {
               <SelectContent className="bg-gray-800 border-gray-700">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="success">Success</SelectItem>
+                <SelectItem value="pending migration">Pending Migration</SelectItem>
                 <SelectItem value="in progress">In Progress</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>
               </SelectContent>
@@ -213,7 +218,7 @@ const MigrationHistory = () => {
       </Card>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800">
           <CardContent className="p-6">
             <div className="text-center">
@@ -221,6 +226,16 @@ const MigrationHistory = () => {
                 {migrationRuns.filter(r => r.status === "Success").length}
               </div>
               <p className="text-sm text-gray-400">Successful Runs</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-yellow-400">
+                {migrationRuns.filter(r => r.status === "Pending Migration").length}
+              </div>
+              <p className="text-sm text-gray-400">Pending Migration</p>
             </div>
           </CardContent>
         </Card>

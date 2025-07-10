@@ -1,6 +1,11 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -98,21 +103,21 @@ const Configuration = () => {
       date: "2024-01-15 14:30:00",
       author: "admin@company.com",
       description: "Added validation rules for customer emails",
-      status: "Current"
+      status: "Current",
     },
     {
       version: "v1.3.1",
       date: "2024-01-14 16:45:00",
       author: "admin@company.com",
       description: "Updated batch size configuration",
-      status: "Previous"
+      status: "Previous",
     },
     {
       version: "v1.3.0",
       date: "2024-01-13 09:15:00",
       author: "admin@company.com",
       description: "Added orders table mapping",
-      status: "Previous"
+      status: "Previous",
     },
   ];
 
@@ -143,14 +148,15 @@ const Configuration = () => {
     }
 
     setIsSaving(true);
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     setIsSaving(false);
     toast({
       title: "Configuration Saved",
-      description: "The mapping configuration has been successfully deployed to S3.",
+      description:
+        "The mapping configuration has been successfully deployed to S3.",
     });
   };
 
@@ -165,14 +171,15 @@ const Configuration = () => {
     }
 
     setIsSaving(true);
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     setIsSaving(false);
     toast({
       title: "Configuration Deployed",
-      description: "The new configuration is now active and will be used for future migrations.",
+      description:
+        "The new configuration is now active and will be used for future migrations.",
     });
   };
 
@@ -186,8 +193,9 @@ const Configuration = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-100">Configuration Management</h1>
-        <p className="text-gray-400 mt-1">Manage your migration mapping configuration</p>
+        <h1 className="text-3xl font-bold text-gray-100">
+          Configuration Management
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -201,9 +209,6 @@ const Configuration = () => {
                     <Code className="h-5 w-5 mr-2" />
                     Mapping Configuration
                   </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Edit the JSON configuration for data transformations and mappings
-                  </CardDescription>
                 </div>
                 <div className="flex items-center space-x-2">
                   {isValidJson ? (
@@ -226,16 +231,17 @@ const Configuration = () => {
                   value={config}
                   onChange={(e) => handleConfigChange(e.target.value)}
                   className={`h-96 font-mono text-sm bg-gray-800 border-gray-700 text-gray-100 ${
-                    !isValidJson ? 'border-red-600' : ''
+                    !isValidJson ? "border-red-600" : ""
                   }`}
                   placeholder="Enter your JSON configuration..."
                 />
-                
+
                 {!isValidJson && (
                   <Alert className="bg-red-900/20 border-red-600">
                     <AlertCircle className="h-4 w-4 text-red-400" />
                     <AlertDescription className="text-red-300">
-                      Invalid JSON syntax. Please check your configuration for errors.
+                      Invalid JSON syntax. Please check your configuration for
+                      errors.
                     </AlertDescription>
                   </Alert>
                 )}
@@ -244,7 +250,7 @@ const Configuration = () => {
                   <Button
                     onClick={handleSave}
                     disabled={isSaving || !isValidJson}
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white"
                   >
                     {isSaving ? (
                       <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
@@ -270,25 +276,44 @@ const Configuration = () => {
           {/* Configuration Guidelines */}
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-gray-100">Configuration Guidelines</CardTitle>
+              <CardTitle className="text-gray-100">
+                Configuration Guidelines
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 text-gray-300">
                 <div className="flex items-start space-x-2">
-                  <Badge className="bg-blue-900/50 text-blue-400 border-blue-600 mt-0.5">MAPPING</Badge>
-                  <span>Define source to target field mappings for each table</span>
+                  <Badge className="bg-blue-900/50 text-blue-400 border-blue-600 mt-0.5">
+                    MAPPING
+                  </Badge>
+                  <span>
+                    Define source to target field mappings for each table
+                  </span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <Badge className="bg-green-900/50 text-green-400 border-green-600 mt-0.5">TRANSFORM</Badge>
-                  <span>Specify data transformations like type conversions and formatting</span>
+                  <Badge className="bg-green-900/50 text-green-400 border-green-600 mt-0.5">
+                    TRANSFORM
+                  </Badge>
+                  <span>
+                    Specify data transformations like type conversions and
+                    formatting
+                  </span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <Badge className="bg-purple-900/50 text-purple-400 border-purple-600 mt-0.5">VALIDATE</Badge>
-                  <span>Set validation rules to ensure data quality and integrity</span>
+                  <Badge className="bg-cyan-900/50 text-cyan-400 border-cyan-600 mt-0.5">
+                    VALIDATE
+                  </Badge>
+                  <span>
+                    Set validation rules to ensure data quality and integrity
+                  </span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <Badge className="bg-orange-900/50 text-orange-400 border-orange-600 mt-0.5">GLOBAL</Badge>
-                  <span>Configure global settings like batch size and retry attempts</span>
+                  <Badge className="bg-orange-900/50 text-orange-400 border-orange-600 mt-0.5">
+                    GLOBAL
+                  </Badge>
+                  <span>
+                    Configure global settings like batch size and retry attempts
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -303,16 +328,18 @@ const Configuration = () => {
                 <History className="h-5 w-5 mr-2" />
                 Version History
               </CardTitle>
-              <CardDescription className="text-gray-400">
-                View and restore previous versions
-              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {versionHistory.map((version, index) => (
-                  <div key={version.version} className="p-3 bg-gray-800/50 rounded-lg border border-gray-700">
+                  <div
+                    key={version.version}
+                    className="p-3 bg-gray-800/50 rounded-lg border border-gray-700"
+                  >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-gray-100">{version.version}</span>
+                      <span className="font-medium text-gray-100">
+                        {version.version}
+                      </span>
                       {version.status === "Current" ? (
                         <Badge className="bg-green-900/50 text-green-400 border-green-600">
                           Current
@@ -322,41 +349,19 @@ const Configuration = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => restoreVersion(version.version)}
-                          className="text-purple-400 hover:text-purple-300"
+                          className="text-cyan-400 hover:text-cyan-300"
                         >
                           Restore
                         </Button>
                       )}
                     </div>
-                    <p className="text-sm text-gray-300 mb-1">{version.description}</p>
+                    <p className="text-sm text-gray-300 mb-1">
+                      {version.description}
+                    </p>
                     <p className="text-xs text-gray-400">{version.date}</p>
                     <p className="text-xs text-gray-400">by {version.author}</p>
                   </div>
                 ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-gray-100">Current Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Active Version</span>
-                  <Badge className="bg-green-900/50 text-green-400 border-green-600">
-                    v1.3.2
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Last Deploy</span>
-                  <span className="text-gray-300">2 hours ago</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Config Size</span>
-                  <span className="text-gray-300">2.4 KB</span>
-                </div>
               </div>
             </CardContent>
           </Card>

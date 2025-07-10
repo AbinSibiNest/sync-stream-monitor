@@ -1,6 +1,11 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,12 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  CheckCircle,
-  Database,
-  FileText,
-  Users,
-} from "lucide-react";
+import { CheckCircle, Database, FileText, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const PendingMigration = () => {
@@ -34,7 +34,7 @@ const PendingMigration = () => {
       email: "john.smith@email.com",
       phone: "+1-555-0101",
       address: "123 Main St, New York, NY 10001",
-      settledAmount: 15000
+      settledAmount: 15000,
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ const PendingMigration = () => {
       email: "sarah.johnson@email.com",
       phone: "+1-555-0102",
       address: "456 Oak Ave, Los Angeles, CA 90210",
-      settledAmount: 22500
+      settledAmount: 22500,
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ const PendingMigration = () => {
       email: "michael.brown@email.com",
       phone: "+1-555-0103",
       address: "789 Pine Dr, Chicago, IL 60601",
-      settledAmount: 18750
+      settledAmount: 18750,
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ const PendingMigration = () => {
       email: "emily.davis@email.com",
       phone: "+1-555-0104",
       address: "321 Elm St, Houston, TX 77001",
-      settledAmount: 31200
+      settledAmount: 31200,
     },
     {
       id: 5,
@@ -70,14 +70,14 @@ const PendingMigration = () => {
       email: "david.wilson@email.com",
       phone: "+1-555-0105",
       address: "654 Maple Ln, Phoenix, AZ 85001",
-      settledAmount: 27800
-    }
+      settledAmount: 27800,
+    },
   ];
 
   const handleSelectAll = (checked: boolean) => {
     setSelectAll(checked);
     if (checked) {
-      setSelectedRows(parsedData.map(row => row.id));
+      setSelectedRows(parsedData.map((row) => row.id));
     } else {
       setSelectedRows([]);
     }
@@ -85,9 +85,9 @@ const PendingMigration = () => {
 
   const handleRowSelect = (rowId: number, checked: boolean) => {
     if (checked) {
-      setSelectedRows(prev => [...prev, rowId]);
+      setSelectedRows((prev) => [...prev, rowId]);
     } else {
-      setSelectedRows(prev => prev.filter(id => id !== rowId));
+      setSelectedRows((prev) => prev.filter((id) => id !== rowId));
       setSelectAll(false);
     }
   };
@@ -115,7 +115,6 @@ const PendingMigration = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-100">Pending Migration</h1>
-        <p className="text-gray-400 mt-1">Review and migrate parsed CSV data</p>
       </div>
 
       {/* Summary Stats */}
@@ -125,9 +124,11 @@ const PendingMigration = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-400">Total Records</p>
-                <p className="text-2xl font-bold text-gray-100">{parsedData.length}</p>
+                <p className="text-2xl font-bold text-gray-100">
+                  {parsedData.length}
+                </p>
               </div>
-              <FileText className="h-8 w-8 text-purple-400" />
+              <FileText className="h-8 w-8 text-cyan-400" />
             </div>
           </CardContent>
         </Card>
@@ -137,7 +138,9 @@ const PendingMigration = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-400">Selected</p>
-                <p className="text-2xl font-bold text-blue-400">{selectedRows.length}</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {selectedRows.length}
+                </p>
               </div>
               <Users className="h-8 w-8 text-blue-400" />
             </div>
@@ -150,7 +153,10 @@ const PendingMigration = () => {
               <div>
                 <p className="text-sm text-gray-400">Total Amount</p>
                 <p className="text-2xl font-bold text-green-400">
-                  ${parsedData.reduce((sum, row) => sum + row.settledAmount, 0).toLocaleString()}
+                  $
+                  {parsedData
+                    .reduce((sum, row) => sum + row.settledAmount, 0)
+                    .toLocaleString()}
                 </p>
               </div>
               <Database className="h-8 w-8 text-green-400" />
@@ -183,7 +189,7 @@ const PendingMigration = () => {
               <Button
                 onClick={handleMigrate}
                 disabled={selectedRows.length === 0}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
+                className="bg-cyan-600 hover:bg-cyan-700 text-white"
               >
                 <Database className="h-4 w-4 mr-2" />
                 Migrate Selected ({selectedRows.length})
@@ -202,7 +208,9 @@ const PendingMigration = () => {
                   <TableHead className="text-gray-300">Email</TableHead>
                   <TableHead className="text-gray-300">Phone</TableHead>
                   <TableHead className="text-gray-300">Address</TableHead>
-                  <TableHead className="text-gray-300">Settled Amount</TableHead>
+                  <TableHead className="text-gray-300">
+                    Settled Amount
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -211,14 +219,22 @@ const PendingMigration = () => {
                     <TableCell>
                       <Checkbox
                         checked={selectedRows.includes(row.id)}
-                        onCheckedChange={(checked) => handleRowSelect(row.id, checked as boolean)}
+                        onCheckedChange={(checked) =>
+                          handleRowSelect(row.id, checked as boolean)
+                        }
                       />
                     </TableCell>
-                    <TableCell className="text-gray-100 font-medium">{row.referenceId}</TableCell>
-                    <TableCell className="text-gray-300">{row.fullName}</TableCell>
+                    <TableCell className="text-gray-100 font-medium">
+                      {row.referenceId}
+                    </TableCell>
+                    <TableCell className="text-gray-300">
+                      {row.fullName}
+                    </TableCell>
                     <TableCell className="text-gray-300">{row.email}</TableCell>
                     <TableCell className="text-gray-300">{row.phone}</TableCell>
-                    <TableCell className="text-gray-300">{row.address}</TableCell>
+                    <TableCell className="text-gray-300">
+                      {row.address}
+                    </TableCell>
                     <TableCell className="text-green-400 font-medium">
                       ${row.settledAmount.toLocaleString()}
                     </TableCell>

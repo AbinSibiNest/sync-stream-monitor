@@ -1,10 +1,21 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -39,7 +50,7 @@ const MigrationHistory = () => {
       endTime: "2024-01-15 14:32:15",
       recordsProcessed: 1250,
       recordsFailed: 0,
-      duration: "2m 15s"
+      duration: "2m 15s",
     },
     {
       id: "run-002",
@@ -49,7 +60,7 @@ const MigrationHistory = () => {
       endTime: null,
       recordsProcessed: 890,
       recordsFailed: 0,
-      duration: "30m 45s"
+      duration: "30m 45s",
     },
     {
       id: "run-003",
@@ -59,7 +70,7 @@ const MigrationHistory = () => {
       endTime: "2024-01-15 13:18:30",
       recordsProcessed: 1875,
       recordsFailed: 225,
-      duration: "3m 30s"
+      duration: "3m 30s",
     },
     {
       id: "run-004",
@@ -69,7 +80,7 @@ const MigrationHistory = () => {
       endTime: "2024-01-15 12:05:45",
       recordsProcessed: 3200,
       recordsFailed: 15,
-      duration: "5m 45s"
+      duration: "5m 45s",
     },
     {
       id: "run-005",
@@ -79,7 +90,7 @@ const MigrationHistory = () => {
       endTime: null,
       recordsProcessed: 567,
       recordsFailed: 0,
-      duration: "1m 20s"
+      duration: "1m 20s",
     },
   ];
 
@@ -105,12 +116,19 @@ const MigrationHistory = () => {
       "Pending Migration": "bg-yellow-900/50 text-yellow-400 border-yellow-600",
       Failed: "bg-red-900/50 text-red-400 border-red-600",
     };
-    return variants[status as keyof typeof variants] || "bg-gray-900/50 text-gray-400 border-gray-600";
+    return (
+      variants[status as keyof typeof variants] ||
+      "bg-gray-900/50 text-gray-400 border-gray-600"
+    );
   };
 
   const filteredRuns = migrationRuns.filter((run) => {
-    const matchesSearch = run.filename.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || run.status.toLowerCase() === statusFilter.toLowerCase();
+    const matchesSearch = run.filename
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" ||
+      run.status.toLowerCase() === statusFilter.toLowerCase();
     return matchesSearch && matchesStatus;
   });
 
@@ -118,7 +136,6 @@ const MigrationHistory = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-100">Migration History</h1>
-        <p className="text-gray-400 mt-1">Track and monitor all migration runs</p>
       </div>
 
       {/* Filters */}
@@ -145,7 +162,9 @@ const MigrationHistory = () => {
               <SelectContent className="bg-gray-800 border-gray-700">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="success">Success</SelectItem>
-                <SelectItem value="pending migration">Pending Migration</SelectItem>
+                <SelectItem value="pending migration">
+                  Pending Migration
+                </SelectItem>
                 <SelectItem value="in progress">In Progress</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>
               </SelectContent>
@@ -187,23 +206,39 @@ const MigrationHistory = () => {
                         </Badge>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-100 font-medium">{run.filename}</TableCell>
+                    <TableCell className="text-gray-100 font-medium">
+                      {run.filename}
+                    </TableCell>
                     <TableCell className="text-gray-300">
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4 text-gray-400" />
                         <span>{run.startTime}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-300">{run.duration}</TableCell>
-                    <TableCell className="text-gray-300">{run.recordsProcessed.toLocaleString()}</TableCell>
+                    <TableCell className="text-gray-300">
+                      {run.duration}
+                    </TableCell>
+                    <TableCell className="text-gray-300">
+                      {run.recordsProcessed.toLocaleString()}
+                    </TableCell>
                     <TableCell>
-                      <span className={`text-sm ${run.recordsFailed > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                      <span
+                        className={`text-sm ${
+                          run.recordsFailed > 0
+                            ? "text-red-400"
+                            : "text-green-400"
+                        }`}
+                      >
                         {run.recordsFailed.toLocaleString()}
                       </span>
                     </TableCell>
                     <TableCell>
                       <Link to={`/run/${run.id}`}>
-                        <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-cyan-400 hover:text-cyan-300"
+                        >
                           <Eye className="h-4 w-4 mr-1" />
                           View Details
                         </Button>
@@ -223,7 +258,7 @@ const MigrationHistory = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-green-400">
-                {migrationRuns.filter(r => r.status === "Success").length}
+                {migrationRuns.filter((r) => r.status === "Success").length}
               </div>
               <p className="text-sm text-gray-400">Successful Runs</p>
             </div>
@@ -233,7 +268,10 @@ const MigrationHistory = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-yellow-400">
-                {migrationRuns.filter(r => r.status === "Pending Migration").length}
+                {
+                  migrationRuns.filter((r) => r.status === "Pending Migration")
+                    .length
+                }
               </div>
               <p className="text-sm text-gray-400">Pending Migration</p>
             </div>
@@ -243,7 +281,7 @@ const MigrationHistory = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-400">
-                {migrationRuns.filter(r => r.status === "In Progress").length}
+                {migrationRuns.filter((r) => r.status === "In Progress").length}
               </div>
               <p className="text-sm text-gray-400">In Progress</p>
             </div>
@@ -253,7 +291,7 @@ const MigrationHistory = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-red-400">
-                {migrationRuns.filter(r => r.status === "Failed").length}
+                {migrationRuns.filter((r) => r.status === "Failed").length}
               </div>
               <p className="text-sm text-gray-400">Failed Runs</p>
             </div>

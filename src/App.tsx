@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +14,6 @@ import RunDetail from "./pages/RunDetail";
 import NotFound from "./pages/NotFound";
 import MigrationSyncConfig from "./pages/MigrationSyncConfig";
 import FirmDetails from "./pages/FirmDetails";
-import MigrationRecordDetail from "./pages/MigrationRecordDetail";
 
 const queryClient = new QueryClient();
 
@@ -68,7 +66,7 @@ const AppContent = () => {
           <AppSidebar />
           <main className="flex-1 p-6 bg-[#1a1f26]">
             <Routes>
-              <Route path="/run/:firmId/:id" element={<RunDetail />} />
+              <Route path="/run/:id" element={<RunDetail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -105,11 +103,6 @@ const AppContent = () => {
           <Routes>
             <Route path="/migration-sync-config" element={<MigrationSyncConfig />} />
             <Route path="/firm/:firmId" element={<FirmDetails />} />
-            <Route path="/firm/:firmId/migration-record/:recordId" element={
-              <div className="p-6">
-                <MigrationRecordDetail />
-              </div>
-            } />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

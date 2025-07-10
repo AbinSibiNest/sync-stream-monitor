@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,16 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CheckCircle, Database, FileText, Users, ExternalLink } from "lucide-react";
+import { CheckCircle, Database, FileText, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const PendingMigration = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [confirmedRecords, setConfirmedRecords] = useState<string[]>([]);
   const { toast } = useToast();
-  const navigate = useNavigate();
-  const { firmId } = useParams();
 
   // Mock parsed CSV data
   const parsedData = [
@@ -94,34 +90,6 @@ const PendingMigration = () => {
       setSelectedRows((prev) => prev.filter((id) => id !== rowId));
       setSelectAll(false);
     }
-  };
-
-  // Listen for record confirmation events
-  useEffect(() => {
-    const handleRecordConfirmed = (event: CustomEvent) => {
-      const { recordId } = event.detail;
-      setConfirmedRecords(prev => [...prev, recordId]);
-      
-      // Auto-select the confirmed record
-      const record = parsedData.find(r => r.referenceId === recordId);
-      if (record) {
-        setSelectedRows(prev => {
-          if (!prev.includes(record.id)) {
-            return [...prev, record.id];
-          }
-          return prev;
-        });
-      }
-    };
-
-    window.addEventListener('recordConfirmed', handleRecordConfirmed as EventListener);
-    return () => {
-      window.removeEventListener('recordConfirmed', handleRecordConfirmed as EventListener);
-    };
-  }, [parsedData]);
-
-  const handleViewDetails = (referenceId: string) => {
-    navigate(`/firm/${firmId}/migration-record/${referenceId}`);
   };
 
   const handleMigrate = () => {
@@ -235,6 +203,7 @@ const PendingMigration = () => {
               <TableHeader>
                 <TableRow className="border-gray-800">
                   <TableHead className="text-gray-300">Select</TableHead>
+                  <TableHead className="text-gray-300">Reference ID</TableHead>
                   <TableHead className="text-gray-300">Full Name</TableHead>
                   <TableHead className="text-gray-300">Email</TableHead>
                   <TableHead className="text-gray-300">Phone</TableHead>
@@ -242,24 +211,21 @@ const PendingMigration = () => {
                   <TableHead className="text-gray-300">
                     Settled Amount
                   </TableHead>
-                  <TableHead className="text-gray-300">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {parsedData.map((row) => (
                   <TableRow key={row.id} className="border-gray-800">
                     <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          checked={selectedRows.includes(row.id)}
-                          onCheckedChange={(checked) =>
-                            handleRowSelect(row.id, checked as boolean)
-                          }
-                        />
-                        {confirmedRecords.includes(row.referenceId) && (
-                          <CheckCircle className="h-4 w-4 text-green-400" />
-                        )}
-                      </div>
+                      <Checkbox
+                        checked={selectedRows.includes(row.id)}
+                        onCheckedChange={(checked) =>
+                          handleRowSelect(row.id, checked as boolean)
+                        }
+                      />
+                    </TableCell>
+                    <TableCell className="text-gray-100 font-medium">
+                      {row.referenceId}
                     </TableCell>
                     <TableCell className="text-gray-300">
                       {row.fullName}
@@ -271,17 +237,6 @@ const PendingMigration = () => {
                     </TableCell>
                     <TableCell className="text-green-400 font-medium">
                       ${row.settledAmount.toLocaleString()}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleViewDetails(row.referenceId)}
-                        className="text-cyan-400 hover:text-cyan-300 hover:bg-gray-800"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-1" />
-                        View Details
-                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

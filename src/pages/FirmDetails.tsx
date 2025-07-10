@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Building, MapPin, Phone, Mail } from "lucide-react";
+import { useEffect, useState } from "react";
 import Dashboard from "./Dashboard";
 import FileUpload from "./FileUpload";
 import PendingMigration from "./PendingMigration";
@@ -13,6 +14,28 @@ import Configuration from "./Configuration";
 const FirmDetails = () => {
   const { firmId } = useParams();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Listen for tab change events from Dashboard quick actions
+  useEffect(() => {
+    const handleTabChange = (event: CustomEvent) => {
+      setActiveTab(event.detail.tabValue);
+    };
+
+    window.addEventListener('tabChange', handleTabChange as EventListener);
+    
+    return () => {
+      window.removeEventListener('tabChange', handleTabChange as EventListener);
+    };
+  }, []);
+
+  // Also check URL hash on mount
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['dashboard', 'upload', 'pending', 'history', 'config'].includes(hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
 
   // Mock firm data - in real app would fetch based on firmId
   const firmData = {
@@ -94,7 +117,7 @@ const FirmDetails = () => {
       </div>
 
       {/* Tabs Navigation */}
-      <Tabs defaultValue="dashboard" className="h-full flex flex-col">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
         <div className="border-b border-gray-700 px-6">
           <TabsList className="grid w-full max-w-5xl grid-cols-5 bg-transparent h-12 p-0">
             <TabsTrigger 
@@ -123,7 +146,7 @@ const FirmDetails = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="config" 
-              className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
+              className="text-gray-300 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-teal-400 rounded-none h-12 hover:text-white transition-colors"
             >
               Configuration
             </TabsTrigger>

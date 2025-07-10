@@ -58,10 +58,18 @@ const Dashboard = () => {
     return variants[status as keyof typeof variants] || "bg-gray-900/50 text-gray-400 border-gray-600";
   };
 
-  // Different upload URLs based on context
-  const uploadUrl = isInFirmContext ? "#" : "/upload";
-  const historyUrl = isInFirmContext ? "#" : "/history";
-  const configUrl = isInFirmContext ? "#" : "/config";
+  // Helper function to handle tab switching in firm context
+  const handleTabSwitch = (tabValue: string) => {
+    if (isInFirmContext) {
+      // Update URL hash to switch to the desired tab
+      const newUrl = `${location.pathname}#${tabValue}`;
+      window.location.hash = tabValue;
+      
+      // Trigger tab change by dispatching a custom event
+      const tabChangeEvent = new CustomEvent('tabChange', { detail: { tabValue } });
+      window.dispatchEvent(tabChangeEvent);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -142,7 +150,11 @@ const Dashboard = () => {
                 </Button>
               </Link>
             ) : (
-              <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
+              <Button 
+                variant="outline" 
+                className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                onClick={() => handleTabSwitch('history')}
+              >
                 View All
               </Button>
             )}
@@ -182,7 +194,7 @@ const Dashboard = () => {
           <CardDescription className="text-gray-400">Common tasks and shortcuts</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {!isInFirmContext ? (
               <Link to="/upload">
                 <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white h-16">
@@ -193,7 +205,10 @@ const Dashboard = () => {
                 </Button>
               </Link>
             ) : (
-              <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white h-16">
+              <Button 
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white h-16"
+                onClick={() => handleTabSwitch('upload')}
+              >
                 <div className="text-center">
                   <Upload className="h-6 w-6 mx-auto mb-1" />
                   <span>Upload File</span>
@@ -211,7 +226,11 @@ const Dashboard = () => {
                 </Button>
               </Link>
             ) : (
-              <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16"
+                onClick={() => handleTabSwitch('pending')}
+              >
                 <div className="text-center">
                   <Timer className="h-6 w-6 mx-auto mb-1" />
                   <span>Pending Migration</span>
@@ -229,7 +248,11 @@ const Dashboard = () => {
                 </Button>
               </Link>
             ) : (
-              <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16"
+                onClick={() => handleTabSwitch('history')}
+              >
                 <div className="text-center">
                   <History className="h-6 w-6 mx-auto mb-1" />
                   <span>View History</span>
@@ -247,7 +270,11 @@ const Dashboard = () => {
                 </Button>
               </Link>
             ) : (
-              <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 h-16"
+                onClick={() => handleTabSwitch('config')}
+              >
                 <div className="text-center">
                   <Settings className="h-6 w-6 mx-auto mb-1" />
                   <span>Configuration</span>
